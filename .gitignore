@@ -32,3 +32,6 @@ ssh
 /ssh
 /untitled
 .env
+/laravel-echo-server
+/myProject
+/redis

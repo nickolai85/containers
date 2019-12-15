@@ -36,9 +36,9 @@ services:
      - ${MYSQL_PORT}:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ikszero
-      MYSQL_USER: ikszero
-      MYSQL_PASSWORD: ikszero
+      MYSQL_DATABASE: react_socket
+      MYSQL_USER: react_socket
+      MYSQL_PASSWORD: react_socket
     volumes:
      - ${DB_PATH_HOST}:/var/lib/mysql
      - ./mysql/my.cnf:/etc/mysql/mysql.conf.d/config-file.cnf
@@ -47,7 +47,28 @@ services:
     build: "./node"
     working_dir: ${APP_PATH_CONTAINER}
     volumes:
-     - ${FRONTEND_PATH_HOST}:${APP_PATH_CONTAINER}
+     - ${BACKEND_PATH_HOST}:${APP_PATH_CONTAINER}
+    ports:
+     - 6001:6001
+    command: "npm start --force"
+    #  - 6007:6007
+    # command: "node server.js --force"
+
+  redis:
+    image: redis:4.0
+    ports:
+      - ${REDIS_PORT}:6379
+    command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
+
+ # socket_io:
+ #  image: node
+ #   user: "node"
+  #  volumes:
+  #    - ${BACKEND_PATH_HOST}:${APP_PATH_CONTAINER}
+  #  working_dir: ${APP_PATH_CONTAINER}
+   # ports:
+  #    - 6001:6001
+   # command: "npm start"
 
   adminer:
     image: adminer
@@ -56,11 +77,6 @@ services:
      - ${ADMINER_PORT}:8080
     links:
      - db
-
-  redis:
-    image: redis:4.0
-    ports:
-      - ${REDIS_PORT}:6379
 
   beanstalkd:
     image: schickling/beanstalkd
