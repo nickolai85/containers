@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y nano mc default-mysql-client git\
     && docker-php-ext-install -j$(nproc) gd
 
 RUN docker-php-ext-install pcntl
-
+RUN docker-php-ext-install pdo_mysql
 #composer
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
 RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
